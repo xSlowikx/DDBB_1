@@ -67,6 +67,34 @@ insert into persona values
 insert into empresa values 
 	(1,2,"Albornoz 2000",1),
     (2,1,"Filete 554",3);
-    
+
+alter table empresa
+	add column nombre varchar (50);
+
 insert into empresa values (3,2,"Jujuy 55",1);
 
+update empresa set nombre = "Banelco" where nro_empresa  = 1;
+update empresa set nombre = "Paulinas" where nro_empresa  = 2;
+update empresa set nombre = "Tecnosur" where nro_empresa  = 3;
+
+insert into trabaja values (1,1,25000.0,20010531), (2,1,30000.0,20030501),(3,2,150000.0,20050325);
+
+select per.nombre NOMBRE, ciu.descripcion CIUDAD 
+	from ciudad ciu join persona per on ciu.id = per.ciudad
+    left join trabaja trab on per.nro_persona = trab.nro_persona
+	join empresa emp on trab.nro_empresa = emp.nro_empresa
+    where emp.nombre = "Banelco"
+    group by per.nro_persona, per.nombre, per.ciudad;
+
+/*Ejercicio_2*/
+
+select per.nombre, per.calle, ciu.descripcion 
+	from ciudad ciu join persona per on ciu.id = per.ciudad
+    left join trabaja trab on trab.nro_persona = per.nro_persona
+    join empresa emp on trab.nro_empresa = emp.nro_empresa
+    where emp.nombre = "Paulinas"
+    group by per.nro_persona, per.nombre, per.calle, ciu.descripcion;
+    
+/*Ejercicio_3*/
+
+select per.nombre 

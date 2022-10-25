@@ -124,3 +124,46 @@ delete from proveedor
 	where proveedor.nombre like "%ABC%";
     
 select * from proveedor;
+
+/*Ejercicio_12*/
+
+insert into proveedor values (5,"Fetuchi","Maravilla 6569",5,20020918);
+    
+select count(*) CANT_PROVEEDORES from proveedor p where p.nombre like "f%";
+
+/*Ejercicio_13*/
+
+select AVG(art.precio) PRECIO_ART, alm.nombre NOMBRE_ALM
+	from articulo art join contiene cont on art.cod_art = cont.cod_articulo 
+    join almacen alm on cont.NRO_ALMACEN = alm.nro
+    group by alm.NRO, alm.nombre;
+    
+/*Ejercicio_14*/
+
+insert into compuesto_por values (1,2),(2,3),(2,9),(1,18),(3,18);
+
+select art.descripcion ARTICULO, count(comp.COD_MATERIAL) CANT_MATERIALES
+	from articulo art join compuesto_por comp on art.cod_art = comp.COD_ARTICULO
+    group by art.cod_art, art.descripcion
+    having count(comp.cod_material) >= 2;
+    
+/*Ejercicio_15*/
+select prov.COD_PROV, prov.NOMBRE, prov.DOMICILIO, count(provpor.cod_material) MATS_PROVEIDOS
+	from proveedor prov left join provisto_por provpor on prov.cod_prov = provpor.cod_proveedor
+    group by prov.COD_PROV, prov.NOMBRE, prov.DOMICILIO ;
+   
+/*Ejercicio_16*/
+
+select max(art.precio) from proveedor p join provisto_por ppor on p.COD_PROV = ppor.COD_PROVEEDOR
+	join compuesto_por comp on ppor.COD_MATERIAL = comp.COD_MATERIAL
+    join articulo art on comp.COD_ARTICULO = art.cod_art
+    join ciudad ciu on p.COD_CIUDAD = ciu.COD_CIU
+    where ciu.NOMBRE = "Zarate";
+    
+/*Ejercicio_17*/
+
+select prov.cod_prov, prov.nombre from proveedor prov 
+	left join provisto_por provpor on provpor.COD_PROVEEDOR = prov.COD_PROV
+    where provpor.COD_MATERIAL is null
+    group by prov.COD_PROV, prov.NOMBRE
+    having count(provpor.COD_MATERIAL) = 0;
